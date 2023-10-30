@@ -1,0 +1,76 @@
+---
+title: "Progress Memo 1"
+subtitle: |
+  | Final Project 
+  | Data Science 1 with R (STAT 301-1)
+author: "Ignacio Dowling"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+---
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/stat301-1-2023-fall/final-project-1-idowling11](https://github.com/stat301-1-2023-fall/final-project-1-idowling11)
+
+:::
+
+::: {.callout-warning}
+GitHub (free account) cannot store large files. If you try to commit and push a large dataset you will have an ERROR! Any file over 100 MB (100,000 KB) needs to be added to the `.gitignore` file BEFORE committing.
+
+**We may need to do that for files in your final project!**
+:::
+
+## Data source
+
+I would like to work with two datasets for this EDA. The link for the first one, which has detailed information on every player picked in each National Football League Draft from 1985 to 2015, is in this footnote.^[This is the link to the first NFL Draft dataset: https://www.kaggle.com/datasets/ulrikthygepedersen/nfl-draft-1985-2015] It contains each selected player's basic professional attributes (the team that picked them, their name, the pick they were selected with, position, etc.), as well as statistics for their professional careers in various categories.
+
+The second one consists of five different .csv files that dive further into prospects' physical attributes and statistics coming out of college since 1967. It is linked here.^[https://www.kaggle.com/datasets/jacklichtenstein/espn-nfl-draft-prospect-data/data] Combining it with the first dataset would allow me to develop a more comprehensive understanding of the players I'm looking at instead of merely examining their career outcomes.
+
+## Why this data
+
+I'm passionate about pro sports, but I really haven't conducted a comprehensive analysis to develop my own takeaways backed by data I explored. Compared to the culminations of comprehensive scouting in other sports, the NFL Draft is regarded as a relatively-difficult setting for professional general managers to "hit" on a pick and draft a great player.^[https://www.theatlantic.com/entertainment/archive/2013/04/why-is-it-so-hard-to-draft-great-nfl-players/275342/]. It's fascinating, and I'd like to see if there's anything in particular that contributes to that or is a standout predictor of "success" (which is also a definition that varies greatly by position and pick number, and is something I'd like to explore too). As stated above, looking at both of these datasets rather than one allows me to develop a greater understanding of each player's profile: their pre-draft background and their career outcome. I also think it would make the data appropriately complex.
+
+## Data quality & complexity check
+
+I will read in each of the datasets below, and then describe them after the code chunks.
+```{r}
+library(tidyverse)
+library(naniar)
+# reading in .csv from first dataset
+nfl_draft_player_info_and_outcomes <- read_csv("data/nfl_draft.csv") 
+
+# reading in five .csvs from second dataset
+nfl_draft_prospect_data <- read_csv("data/nfl_draft_prospects.csv")
+nfl_draft_profiles <- read_csv("data/nfl_draft_profiles.csv")
+player_ids <- read_csv("data/ids.csv")
+college_stats <- read_csv("data/college_statistics.csv")
+qb_data_to_2004 <- read_csv("data/college_qbr.csv")
+
+```
+The first dataset has 34 variables. 25 of those are numerical, with the other nine being categorical. It has 8,435 observations, and has missingness for many performance statistics as well as some attributes (such as age drafted). That is somewhat expected, since football players of different positions typically do not record statistics in every category.
+
+For the second dataset, there were five .csvs. The first, which contains data for the players as draft prospects, has 13,354 observations and 24 variables (14 of which are categorical). The second contains textual information regarding prospects (much of which is contained in the first dataset) -- it has 12,905 observations and 21 variables (13 of which are categorical).
+
+The third has IDs for each drafted player, and may play less of a factor given much of that information is in the first dataset as well. It only has three variables (2 of which are categorical), and 236 observations. The fourth contains college statistics for draft prospects (including undrafted players), and has 66,672 observations with 13 variables; four are numerical and the other 9 are categorical. Finally, the fifth has college quarterback ratings for quarterback prospects going back to 2004. It has 2,049 observations, and 14 variables (12 of those 14 are numerical). None appear to have missingness.
+
+## Potential data issues
+
+I'll need to merge at least some of the datasets that I'll be using to evaluate players that are observations in multiple ones. Considering the year range for the datasets vary, I'll need to make sure I mainly consider a timeline that they share (likely 1985 to 2015). Additionally, I'll have to examine the missingness in the first dataset, while also trying to avoid redundancy and creating more issues of missigness in the process of merging datasets together.
+
+## Misc
+
+With different numbers of observations and variables for each dataset (that is, they don't evaluate the exact same players), I'll definitely focus on looking at various combinations of players (whether by year, position, pick, all of the above, etc.) to add sufficient detail to my analysis instead of trying to develop a greater takeaway for every single player picked.
+
+In doing so, I'm thinking of using the datasets to different extents in the process of merging them. For instance, I'll rely on the lone .csv from the first dataset to compare it with prospects' college statistics much more than I'll examine its relationship with quarterback ratings (a small portion of the 30 years' worth of players included). That being said, I'd like to utilize many if not all of the datasets for this EDA so I can develop findings in a variety of areas (since there are LOTS of variables at play), but there could be redundant information I encounter throughout. I expect that to be a challenge that I'll pursue early on.
