@@ -46,8 +46,10 @@ I'm passionate about pro sports, but I really haven't conducted a comprehensive 
 
 I will read in each of the datasets below, and then describe them after the code chunks.
 ```{r}
+# loading in packages
 library(tidyverse)
 library(naniar)
+
 # reading in .csv from first dataset
 nfl_draft_player_info_and_outcomes <- read_csv("data/nfl_draft.csv") 
 
