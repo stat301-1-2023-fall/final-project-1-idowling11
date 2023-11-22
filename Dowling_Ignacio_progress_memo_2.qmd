@@ -1,0 +1,120 @@
+---
+title: "Progress Memo 2"
+subtitle: |
+  | Final Project 
+  | Data Science 1 with R (STAT 301-1)
+author: "Ignacio Dowling"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+---
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/stat301-1-2023-fall/final-project-1-idowling11](https://github.com/stat301-1-2023-fall/final-project-1-idowling11)
+
+:::
+
+```{r}
+# loading packages
+library(tidyverse)
+library(readr)
+library(ggplot2)
+library(naniar)
+library(knitr)
+```
+
+```{r}
+# reading in .csv from first dataset
+nfl_draft_player_info_and_outcomes <- read_csv("data/nfl_draft.csv") 
+
+# reading in five .csvs from second dataset
+nfl_draft_prospect_data <- read_csv("data/nfl_draft_prospects.csv")
+nfl_draft_profiles <- read_csv("data/nfl_draft_profiles.csv")
+player_ids <- read_csv("data/ids.csv")
+college_stats <- read_csv("data/college_statistics.csv")
+qb_data_to_2004 <- read_csv("data/college_qbr.csv")
+```
+
+## Header 1/Summary
+
+## Foundation for Cleaning: Making Sense of Raw Dataset Timelines
+```{r}
+#| results= 'hide'
+min_year_outcomes <- nfl_draft_player_info_and_outcomes |>
+  summarize(min_year_outcomes = min(year))
+
+max_year_outcomes <- nfl_draft_player_info_and_outcomes |>
+  summarize(max_year_outcomes = max(year))
+  
+min_year_qb_data <- qb_data_to_2004 |>
+  summarize(min_year_qb_data = min(season))
+
+max_year_qb_data <- qb_data_to_2004 |>
+  summarize(max_year_qb_data = max(season))
+
+min_year_college_stats <- college_stats |>
+  summarize(min_year_college = min(season)) 
+
+max_year_college_stats <- college_stats |>
+  summarize(max_year_qb_college = max(season))
+
+min_year_prospect_data <- nfl_draft_prospect_data |>
+  summarize(min_year_prospect = min(draft_year)) 
+
+max_year_prospect_data <- nfl_draft_prospect_data |>
+  summarize(max_year_prospect = max(draft_year))
+ 
+```
+
+```{r}
+year_ranges <- c(min_year_outcomes, max_year_outcomes, min_year_qb_data,
+                 max_year_qb_data, min_year_college_stats, max_year_college_stats,
+                 min_year_prospect_data, max_year_prospect_data)
+
+names <- c("Outcomes Start Year", "Outcomes End Year", 
+                        "QB Data Start Year", "QB Data End Year", 
+                        "College Stats Start Year", "College Stats End Year",
+                        "Prospect Data Start Year", "Prospect Data End Year")
+
+kable(data.frame(year_ranges), col.names = names)
+```
+To get a sense of which years we should work with in answering some of the research questions, and in joining some of the datasets to clean them and answer questions, I found the timelines for the sets which contain years for each player observation. 
+
+In working with quarterback data for prospects in their last years of college football and comparing them to league success, we should use quarterbacks from 2004 to 2015. In comparing data from all prospects to their NFL outcomes (that is, nfl_draft_prospect_data vs. outcomes) -- the two largest datasets here -- I'll aim to focus on the years 1985 to 2015.
+
+Comparing the collegiate stats dataset to professional outcomes may not be as beneficial to developing any insights, since their intersection is just a year (2014 to 2015). However, though, in joining datasets and conducting multivariate analysis, this table gives me a sense of the time crossovers of the datasets in question.
+
+Two of the datasets (nfl_draft_profiles and player_ids) don't have years, so I'll likely look to match any player observations I need from those using the player names.
+
+```{r}
+#| results= 'hide'
+## More Cleaning
+# removing irrelevant variables, changing time ranges
+nfl_draft_profiles_modified <- nfl_draft_profiles |>
+  select(-player_image, -link, -school_logo, -text1, -text2, -text3, -text4, -guid)
+
+nfl_draft_prospect_data_modified <- nfl_draft_prospect_data |>
+  select(-team_logo_espn, -guid, -player_image) |>
+  filter(draft_year > 1984)
+
+# prolly join draft_profiles with draft_prospect_data 
+
+# creating key for outcomes and prospect_data to join them --> Make the player names like 2015Jameis Winston by using some sort of string/concatenation, and make the outcomes Player ID the ID for as many dataframes as you can
+
+# Gotta evaluate missingness and stuff that doesn't match up across diff DFs
+
+#then do the analyses/start the EDA
+
+```
+

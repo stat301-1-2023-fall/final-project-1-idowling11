@@ -55,6 +55,14 @@ player_ids <- read_csv("data/ids.csv")
 college_stats <- read_csv("data/college_statistics.csv")
 qb_data_to_2004 <- read_csv("data/college_qbr.csv")
 
+# General GIST of what I'll start out with
+  # Univariate distribution of AVs, distribution of HOFs by overall draft pick
+  # Figure out how to join/merge a few of these datasets, explain different subsets of years we'll look at since some intersect in diff places
+  # Univariate analysis of counting stats/accolades (shit ton of histograms)
+  # A few scatters/attributes about stuff that correlates with high AV for QBs
+  
+  
+
 ```
 The first dataset has 34 variables. 25 of those are numerical, with the other nine being categorical. It has 8,435 observations, and has missingness for many performance statistics as well as some attributes (such as age drafted). That is somewhat expected, since football players of different positions typically do not record statistics in every category.
 
@@ -71,3 +79,5 @@ I'll need to merge at least some of the datasets that I'll be using to evaluate 
 With different numbers of observations and variables for each dataset (that is, they don't evaluate the exact same players), I'll definitely focus on looking at various combinations of players (whether by year, position, pick, all of the above, etc.) to add sufficient detail to my analysis instead of trying to develop a greater takeaway for every single player picked.
 
 In doing so, I'm thinking of using the datasets to different extents in the process of merging them. For instance, I'll rely on the lone .csv from the first dataset to compare it with prospects' college statistics much more than I'll examine its relationship with quarterback ratings (a small portion of the 30 years' worth of players included). That being said, I'd like to utilize many if not all of the datasets for this EDA so I can develop findings in a variety of areas (since there are LOTS of variables at play), but there could be redundant information I encounter throughout. I expect that to be a challenge that I'll pursue early on.
+
+
