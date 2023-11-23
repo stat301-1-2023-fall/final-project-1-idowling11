@@ -32,6 +32,7 @@ library(readr)
 library(ggplot2)
 library(naniar)
 library(knitr)
+library(stringr)
 ```
 
 ```{r}
@@ -46,11 +47,27 @@ college_stats <- read_csv("data/college_statistics.csv")
 qb_data_to_2004 <- read_csv("data/college_qbr.csv")
 ```
 
-## Header 1/Summary
+## Memo Summary: Where I am and what I need to do
+In this memo, I cleaned the datasets I have by joining three of the raw ones that I considered the most relevant: nfl_draft_prospects (prospect data), nfl_draft_profiles (similar data, but with physical information that could help me down the line), and nfl_draft (which displayed career stats/outcomes for draftees). Before joining them, I varied and matched time ranges, modified keys using a string to join them smoothly, and removed variables that I considered irrelevant right away and/or redundant.
 
-## Foundation for Cleaning: Making Sense of Raw Dataset Timelines
+I'd consider this cleaning to be slightly intensive/complex: it took me a decent amount of time and thought-work (and because of the vastly different statistics for different positions in football, there is missingness), but it's definitely not the main objective of this EDA.
+
+I then began my exploring approximate value, which I determined to be a good measurement of what I consider "career success" for a draft pick, which is where I wanted to start my EDA. I conducted univariate analysis and bivariate analysis with draft round, All-Pro First Team selections and Pro Bowl selections. I'd like to build on that takeaway by using AV as a measuring stick for looking at traits for "successful" draftees by certain positions and by round. 
+
+From there, I could take a couple approaches that I'm still thinking about. I could potentially analyze traits that make an early draft pick stand out in the crowd for a few different positions (particularly quarterbacks, bringing the college_qbr dataset into play), or I could measure how well ESPN's grade and position rankings (a variable here) have predicted draftees' success in the 21st century. Maybe I come up with a new route. Ultimately, though, I'd like to conduct the EDA by keeping draftees' long-term success in mind with most of the analyses/visualizations I conduct. So, in particular (but not limited to):
+
+1. What is long-term success, and how does it vary by draft round/pick?
+2. What potentially indicates long-term success in a draft pick (maybe developing an AV over expected variable by various positions and building from there)? How to find diamonds in the rough?
+3. What potentially distinguishes a top draft pick by certain positions/other variables? How has this changed since 1985? 
+
+The biggest thing I need to do is that I still need to write the codebook and write definitions for each variable, which I'll plan on doing this week. I also need to write the executive summary. From there, I think I'm in a good place with the analyses (incorporating multivariate ones is something I'd like to think about further), I just need to make my train of thought organized so it flows well.
+
+Also: I may delete the ids.csv file from the folder since I've joined more valuable datasets already, and the IDs/players don't seem to match with or serve as a connector for the other datasets. Thus, those observations don't have much value in helping me conduct an analysis.
+
+## Foundation for Cleaning: Raw Dataset Timelines
 ```{r}
-#| results= 'hide'
+#| echo: false
+# Establishing a foundation for cleaning: Making raw dataset timeline
 min_year_outcomes <- nfl_draft_player_info_and_outcomes |>
   summarize(min_year_outcomes = min(year))
 
@@ -78,6 +95,7 @@ max_year_prospect_data <- nfl_draft_prospect_data |>
 ```
 
 ```{r}
+#| echo: false
 year_ranges <- c(min_year_outcomes, max_year_outcomes, min_year_qb_data,
                  max_year_qb_data, min_year_college_stats, max_year_college_stats,
                  min_year_prospect_data, max_year_prospect_data)
@@ -89,7 +107,7 @@ names <- c("Outcomes Start Year", "Outcomes End Year",
 
 kable(data.frame(year_ranges), col.names = names)
 ```
-To get a sense of which years we should work with in answering some of the research questions, and in joining some of the datasets to clean them and answer questions, I found the timelines for the sets which contain years for each player observation. 
+To get a sense of which years we should work with in answering some of the research questions, and in joining some of the datasets to clean them and answer questions, I found the timelines for the sets which contain years for each player observation. While the reader won't see me work with this data, I think that it's necessary context for interpreting the analysis that I'll conduct.
 
 In working with quarterback data for prospects in their last years of college football and comparing them to league success, we should use quarterbacks from 2004 to 2015. In comparing data from all prospects to their NFL outcomes (that is, nfl_draft_prospect_data vs. outcomes) -- the two largest datasets here -- I'll aim to focus on the years 1985 to 2015.
 
@@ -98,7 +116,7 @@ Comparing the collegiate stats dataset to professional outcomes may not be as be
 Two of the datasets (nfl_draft_profiles and player_ids) don't have years, so I'll likely look to match any player observations I need from those using the player names.
 
 ```{r}
-#| results= 'hide'
+#| echo: false
 ## More Cleaning
 # removing irrelevant variables, changing time ranges
 nfl_draft_profiles_modified <- nfl_draft_profiles |>
@@ -108,13 +126,136 @@ nfl_draft_prospect_data_modified <- nfl_draft_prospect_data |>
   select(-team_logo_espn, -guid, -player_image) |>
   filter(draft_year > 1984)
 
-# prolly join draft_profiles with draft_prospect_data 
+# joining nfl_draft_profiles with nfl_draft_prospect_data_modified using player_id
+nfl_draft_prospect_data_combined <- nfl_draft_prospect_data_modified |>
+  left_join(nfl_draft_profiles_modified, join_by(player_id)) |>
+  select(-contains(".y"))
 
-# creating key for outcomes and prospect_data to join them --> Make the player names like 2015Jameis Winston by using some sort of string/concatenation, and make the outcomes Player ID the ID for as many dataframes as you can
+nfl_draft_prospect_data_combined_1985_to_2021 <- nfl_draft_prospect_data_combined|>
+  rename(player_name = player_name.x, 
+         position = position.x, 
+         pos_abbr = pos_abbr.x,
+         school = school.x, 
+         school_name = school_name.x, 
+         school_abbr = school_abbr.x,
+         weight = weight.x,
+         height = height.x,
+         pos_rk = pos_rk.x,
+         ovr_rk = ovr_rk.x,
+         grade = grade.x)
 
-# Gotta evaluate missingness and stuff that doesn't match up across diff DFs
+# DO NOT FORGET to write_csv() the new datasets into the data folder to save them!
 
-#then do the analyses/start the EDA
+nfl_draft_prospect_data_combined_1985_to_2021$join_id_outcomes <- 
+  str_c(nfl_draft_prospect_data_combined_1985_to_2021$draft_year,                                         nfl_draft_prospect_data_combined_1985_to_2021$player_name)
+
+# join prospect_data with outcomes
+nfl_draft_prospect_data_combined_1985_to_2015 <- nfl_draft_prospect_data_combined_1985_to_2021 |>
+  filter(draft_year < 2016)
+
+nfl_draft_prospect_data_outcomes_1985_to_2015 <- nfl_draft_player_info_and_outcomes |>
+  left_join(nfl_draft_prospect_data_combined_1985_to_2015, join_by(column_a == join_id_outcomes))
+
+nfl_draft_prospect_data_outcomes_1985_to_2015 <- nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  select(-tm, -overall, -round, -draft_year, -contains(".y"),
+         -player_name, -draft_year, -college_univ,
+         -link, -alt_player_id) |>
+  rename(join_id_outcomes = column_a, 
+         pick = pick.x, 
+         player_id = player_id.x)
+
+# writing/saving new datasets
+write_csv(nfl_draft_prospect_data_outcomes_1985_to_2015,
+          "data/nfl_draft_prospect_data_and_outcomes_1985_to_2015.csv")
+
+write_csv(nfl_draft_prospect_data_combined_1985_to_2021, "data/nfl_draft_prospects_and_profiles_combined_1985_to_2021.csv")
+
+
+
 
 ```
 
+## Explorations
+
+#### Analysis: What are Driving Factors Behind Career Success, and What Does Draft Spot Have To Do With That? 
+
+#### What drives career success?
+
+Let's see how a player's career approximate value, or AV, relates to accolades that only the league's most elite football players each season secure: Pro Bowl selections and First Team All-Pro selections. I'm defining a great career as one in which a player displays both longevity while sustaining a great performance level. Thus, in my opinion, the more All-Pro and Pro Bowl teams one makes, the better their career is. 
+```{r}
+# Average Value Distribution compared to All-Pro First Team Selections
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  mutate(ap1_factored = factor(ap1)) |>
+  ggplot(aes(x = ap1_factored, y = carav)) +
+  geom_boxplot(fill = "sky blue") +
+  labs(title = "Career Approximate Value by Number of All-Pro First Team Selections", 
+       x = "All-Pro First Team Selections", y = "Career Approximate Value (AV)")
+
+# How about Pro Bowls?
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  mutate(pb_factored = factor(pb)) |>
+  ggplot(aes(x = pb_factored, y = carav)) +
+  geom_boxplot(fill = "sky blue") +
+  labs(title = "Career Approximate Value by Number of Pro Bowl Selections", 
+       x = "Pro Bowl Selections", y = "Career Approximate Value (AV)")
+```
+For every accolade earned, the median AV for players with a particular number of All-Pro and Pro Bowl selections tends to increase. 
+
+Univariate-wise, let's explore the distribution of different players' approximate values during their careers. Doing every draftee from 1985 to 2015 (that is, including young, active ones) could skew the data lower, so let's look at the distribution for retired players only.
+
+```{r}
+#| eval: false
+# AV Distribution: Everyone. Could be biased because of non-retired players whose careers aren't finished.
+ggplot(nfl_draft_prospect_data_outcomes_1985_to_2015, aes(x = carav)) +
+  geom_histogram(color = "white")
+```
+
+```{r}
+# AV Distribution: Retired Players
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  filter(to < 2016) |>
+  ggplot(aes(x = carav)) +
+  geom_histogram(color = "white", binwidth = 5) +
+  labs(title = "Career AV Distribution for Retired Players: 1985-2015",
+       x = "AV", y = "Count")
+```
+It's apparent that career approximate value is a good measure of NFL career success: it rewards longevity and performance. It's also clear that most drafted players don't accumulate lots of AV. The right skew is dramatic, even without considering current players still accumulating AV as of 2015. This is potentially because of the vast number of late-round picks and the much-smaller number of starting/star roles on NFL teams. Thus, let's explore how this varies by round; that is, if first, second, and third-rounders buck that distribution:
+
+```{r}
+# AV Distribution: Retired First-Rounders
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  filter(to < 2016) |>
+  filter(rnd == 1) |>
+  ggplot(aes(x = carav)) +
+  geom_histogram(color = "white", binwidth = 5) +
+  labs(title = "Career AV Distribution for Retired First-Rounders: 1985-2015",
+       x = "AV", y = "Count")
+
+# AV Distribution: Retired Second-Rounders
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  filter(to < 2016) |>
+  filter(rnd == 2) |>
+  ggplot(aes(x = carav)) +
+  geom_histogram(color = "white", binwidth = 5) +
+  labs(title = "Career AV Distribution for Retired Second-Rounders: 1985-2015",
+       x = "AV", y = "Count")
+
+# AV Distribution: Retired Third-Rounders
+nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  filter(to < 2016) |>
+  filter(rnd == 3) |>
+  ggplot(aes(x = carav)) +
+  geom_histogram(color = "white", binwidth = 5) +
+  labs(title = "Career AV Distribution for Retired Third-Rounders: 1985-2015",
+       x = "AV", y = "Count")
+
+# AV Median by Round: Table format
+av_by_round <- nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+  filter(to < 2016) |>
+  group_by(rnd) |>
+  summarize(median_av = median(carav))
+
+names = c("Round", "Median AV")
+kable(data.frame(av_by_round), col.names = names, caption = "Median Approximate Value by Round for Retired Players: 1985 to 2015")
+```
+Evidently, the median AV goes down dramatically for every ensuing round. It's worth noting that the NFL moved to a seven-round draft format and has stuck with that since 1994, but that shift still holds. While the visual distributions for the first, second, and third round look relatively similar, the upper tail for Round 1 draftees seems to have many more players accumulate a career approximate value above 75 than in other rounds.
