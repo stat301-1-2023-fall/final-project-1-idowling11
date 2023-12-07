@@ -1,4 +1,4 @@
-## Packages and Original Raw Datasets
+## Packages and Original Raw Datasets, as well as Cleaning/Joining
 
 # loading packages
 library(tidyverse)
@@ -83,22 +83,23 @@ nfl_draft_prospect_data_combined_1985_to_2021 <- nfl_draft_prospect_data_combine
          ovr_rk = ovr_rk.x,
          grade = grade.x)
 
-# DO NOT FORGET to write_csv() the new datasets into the data folder to save them!
-
 # making a key for prospect_data_combined to join with player info/outcomes dataset
 nfl_draft_prospect_data_combined_1985_to_2021$join_id_outcomes <- 
   str_c(nfl_draft_prospect_data_combined_1985_to_2021$draft_year,                                         nfl_draft_prospect_data_combined_1985_to_2021$player_name)
 
 # joining prospect_data_combined with outcomes using the above key ("join_id_outcomes")
 # establishing shared time range: 1985 to 2015 for consistency
-nfl_draft_prospect_data_combined_1985_to_2015 <- nfl_draft_prospect_data_combined_1985_to_2021 |>
+nfl_draft_prospect_data_combined_1985_to_2015 <- 
+  nfl_draft_prospect_data_combined_1985_to_2021 |>
   filter(draft_year < 2016)
 
 nfl_draft_prospect_data_outcomes_1985_to_2015 <- nfl_draft_player_info_and_outcomes |>
-  left_join(nfl_draft_prospect_data_combined_1985_to_2015, join_by(column_a == join_id_outcomes))
+  left_join(nfl_draft_prospect_data_combined_1985_to_2015, 
+            join_by(column_a == join_id_outcomes))
 
 # some more cleaning of new dataset          
-nfl_draft_prospect_data_outcomes_1985_to_2015 <- nfl_draft_prospect_data_outcomes_1985_to_2015 |>
+nfl_draft_prospect_data_outcomes_1985_to_2015 <- 
+  nfl_draft_prospect_data_outcomes_1985_to_2015 |>
   select(-tm, -overall, -round, -draft_year, -contains(".y"),
          -player_name, -draft_year, -college_univ,
          -link, -alt_player_id) |>
