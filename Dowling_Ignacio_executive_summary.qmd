@@ -1,0 +1,41 @@
+---
+title: "Executive Summary"
+subtitle: |
+  | Final Project 
+  | Data Science 1 with R (STAT 301-1)
+author: "Ignacio Dowling"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+from: markdown+emoji 
+---
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/stat301-1-2023-fall/final-project-1-idowling11](https://github.com/stat301-1-2023-fall/final-project-1-idowling11)
+
+:::
+
+## Purpose
+Examining a combination of NFL Draft datasets in a number of different areas – rather than just a few statistics in one area  – allows for the possibility to develop a greater understanding of each prospect’s profile: their pre-draft background and their career outcome.
+
+In doing so, the combination of these datasets – as detailed in the appendix – allows for users to explore 30-year and 36-year historical ranges: 1985 to 2015 and 1985 to 2021. Joining between those datasets – and working between ones whose timelines didn’t always match perfectly and had missing physical attributes and ESPN grades before 2004 – presented a challenge toward diving into a more comprehensive analysis. However, with a large historical base consisting of thousands of draftees, exploring this data can lead to greater progress toward defining and developing a critical understanding of the terms mentioned above.
+
+## Major Results
+Striving towards an understanding of the terms above, this EDA looks at three areas: (1) the driving factors behind NFL career success, and how one’s draft spot relates to that success, (2) factors that potentially indicate high draft status (getting selected earlier and higher ESPN prospect grades) for quarterbacks and offensive/defensive linemen, and (3) the factors behind defining a long-term “high value” draft pick, identifying them, and identifying which teams have succeeded the most in doing so.
+
+Firstly, I found that a high approximate value for a player, or AV, correlates with career success. However, a very small number of draftees record even a marginally-high AV, and the chance of selecting an AV player begins to fall dramatically after Round 1 of the draft. The median AV for each pick steadily decreases by pick in the first round, but then remains relatively constant.
+
+While I focused on quarterbacks and linemen in the middle exploration, my biggest findings came with elite college quarterbacks. For them, a rare combination of historic college estimated points added (EPA) and historically-high quarterback rating (QBR) tend to lead to a very high draft status. Additionally, the relationship isn’t as strong when considering only one variable, but QBR has a stronger relationship with draft status than EPA does. When considering all quarterback prospects, height slightly plays a role, but it isn’t an end-all, be-all regarding pick number – it plays a greater role in influencing a QB’s ESPN prospect grade. 
+
+Finally, I developed a new metric: AV over expected – to gauge each draftee’s value depending on their career success relative to others selected near their draft spot. In exploring that statistic, I found that high-value players in later rounds, or “diamonds in the rough” (after round 2) tend to separate themselves from the pack at around the 50 AV over expected-threshold. I found that the Green Bay Packers and Pittsburgh Steelers have fared the best when it comes to identifying and selecting these diamonds in the rough since 1985. Both of those teams also happen to be the two best teams when adding up the teams’ entire accumulated approximate value over expected from 1985 to 2015. That metric has shown to increase over time for every team since most draftees have low career expectations to begin with. 
+
+Ultimately, these are  a few of the biggest conclusions for each exploration, helping us equate success with approximate value, “value” with AV relative to similar draftees, and “high draft status” for quarterbacks and linemen as a product of a number of factors, namely EPA and QBR for the elite of the elite quarterbacks.
+
+
+
