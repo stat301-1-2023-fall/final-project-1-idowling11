@@ -623,7 +623,7 @@ Now, looking at different players' long-term values:
 
 We've already explored the median AV by round, and its distribution for each of the first 64 picks for retired players. A top-5 draft pick may have a high AV relative to a third-rounder, but that doesn't make them a high-value pick (or a good one), even if they're the more valuable player!
 
-So, let's bring a new metric into the fold: approximate value over expected.I'll define it as a player's approximate value subtracted by the median AV for retired players near their draft spot. 
+So, let's bring a new metric into the fold: approximate value over expected (AVOE). I'll define it as a player's approximate value subtracted by the median AV for retired players near their draft spot. 
 
 Granted, as we saw in some of the earlier explorations, the median AV for a player doesn't steadily decrease with every pick after the first round. Plus, different teams at different spots may pass on a slightly better player to fill a positional need, especially later in the draft. Thus, I'll designate the "median AV" compared to each player as the median AV of a five-spot cluster. For instance, a No. 1 overall pick's AV over expected in this EDA would be their approximate value minus the median AV of retired picks No. 1 through No. 5 since 1985. A No. 6 pick would be compared to the median AVs for overall picks 6-10, a No. 11 pick for a median among picks 11-15, etc.
 
