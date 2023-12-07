@@ -112,57 +112,6 @@ write_csv(nfl_draft_prospects_and_profiles_combined_1985_to_2021_codebook,
 ```
 
 
-## Foundation for Cleaning: Raw Dataset Timelines
-```{r}
-#| echo: false
-# Establishing a foundation for cleaning: Making raw dataset timeline
-min_year_outcomes <- nfl_draft_player_info_and_outcomes |>
-  summarize(min_year_outcomes = min(year))
-
-max_year_outcomes <- nfl_draft_player_info_and_outcomes |>
-  summarize(max_year_outcomes = max(year))
-  
-min_year_qb_data <- qb_data_to_2004 |>
-  summarize(min_year_qb_data = min(season))
-
-max_year_qb_data <- qb_data_to_2004 |>
-  summarize(max_year_qb_data = max(season))
-
-min_year_college_stats <- college_stats |>
-  summarize(min_year_college = min(season)) 
-
-max_year_college_stats <- college_stats |>
-  summarize(max_year_qb_college = max(season))
-
-min_year_prospect_data <- nfl_draft_prospect_data |>
-  summarize(min_year_prospect = min(draft_year)) 
-
-max_year_prospect_data <- nfl_draft_prospect_data |>
-  summarize(max_year_prospect = max(draft_year))
- 
-```
-
-```{r}
-#| echo: false
-year_ranges <- c(min_year_outcomes, max_year_outcomes, min_year_qb_data,
-                 max_year_qb_data, min_year_college_stats, max_year_college_stats,
-                 min_year_prospect_data, max_year_prospect_data)
-
-names <- c("Outcomes Start Year", "Outcomes End Year", 
-                        "QB Data Start Year", "QB Data End Year", 
-                        "College Stats Start Year", "College Stats End Year",
-                        "Prospect Data Start Year", "Prospect Data End Year")
-
-kable(data.frame(year_ranges), col.names = names)
-```
-To get a sense of which years we should work with in answering some of the research questions, and in joining some of the datasets to clean them and answer questions, I found the timelines for the sets which contain years for each player observation. While the reader won't see me work with this data, I think that it's necessary context for interpreting the analysis that I'll conduct.
-
-In working with quarterback data for prospects in their last years of college football and comparing them to league success, we should use quarterbacks from 2004 to 2015. In comparing data from all prospects to their NFL outcomes (that is, nfl_draft_prospect_data vs. outcomes) -- the two largest datasets here -- I'll aim to focus on the years 1985 to 2015.
-
-Comparing the collegiate stats dataset to professional outcomes may not be as beneficial to developing any insights, since their intersection is just a year (2014 to 2015). However, though, in joining datasets and conducting multivariate analysis, this table gives me a sense of the time crossovers of the datasets in question.
-
-Two of the datasets (nfl_draft_profiles and player_ids) don't have years, so I'll likely match any player observations I need from those using the player names.
-
 ```{r}
 #| echo: false
 ## More Cleaning
@@ -227,17 +176,31 @@ write_csv(nfl_draft_prospect_data_combined_1985_to_2021, "data/nfl_draft_prospec
 
 By cleaning, merging, and exploring different datasets covering NFL Draft Data – on prospects’ physical information, statistical information, and career accolades and outcomes – I looked to explore whether some of those metrics and factors influenced their career successes and long-term draft value for different teams. Additionally, I examined whether certain elite physical and statistical metrics in different categories played a role in helping quarterbacks and linemen earn high draft selections.
 
-I chose to explore this data because I'm particularly interestedd pro sports, but haven't conducted a comprehensive analysis to develop my own takeaways backed by data I explored. Thus, I chose to explore data regarding 30+ years of the NFL Draft.
+I chose to explore this data because I'm particularly interested in pro sports, but haven't conducted a comprehensive analysis to develop my own takeaways backed by data I explored. Thus, I chose to explore data regarding 30+ years of the NFL Draft, which is one of the hardest sports institutions for a fan or expert to identify a talented player... especially as the later rounds go on.
+
+As mentioned in the executive summary, this EDA revolves around developing a more critical understanding of three concepts: career success, high draft status for linemen and quarterbacks, and high draft value for both teams and players.
 
 ## Data Overview and Quality
-Regarding the two most important raw datasets, the first dataset has 34 variables. 25 of those are numerical, with the other nine being categorical. It has 8,435 observations, and has missingness for many performance statistics as well as some attributes (such as age drafted). That is somewhat expected, since football players of different positions typically do not record statistics in every category.
+::: {.callout-tip icon=false}
 
-For the second dataset, there were five .csvs. The first, which contains data for the players as draft prospects, has 13,354 observations and 24 variables (14 of which are categorical). The second contains textual information regarding prospects (much of which is contained in the first dataset) -- it has 12,905 observations and 21 variables (13 of which are categorical).
+## Important
 
-Another has IDs for each drafted player, and may play less of a factor given much of that information is in the first dataset as well. It only has three variables (2 of which are categorical), and 236 observations. The fourth contains college statistics for draft prospects (including undrafted players), and has 66,672 observations with 13 variables; four are numerical and the other 9 are categorical. Finally, the fifth has college quarterback ratings for quarterback prospects going back to 2004. It has 2,049 observations, and 14 variables (12 of those 14 are numerical). None appear to have missingness.
+An in-depth look at how I joined datasets and .csvs together -- as well as the difference in lengths for overlapping timelines for a few of these that affected how I explored the data -- can be found in the appendix.
 
-The two joined datasets are combinations of these five, with the exception of the ids dataset. It has ample missingness due to the different positions and added metrics for each player, not all of which are universal. Additionally, ESPN's grade data and physical metrics tend to only be included for prospects past 2004 in all of these datasets, including the joined ones.
+:::
 
+
+A total of four datasets are used here. Two are joined/merged, and two are raw. One of those raw ones contains four .csv files I used. Info regarding the topics of each are in the README file. All of them arise from two data sources from Kaggle, each of which can be found in the References section. Of the raw .csvs, only nfl_draft.csv comes from the dataset created by Pedersen^[See Reference 5.], while the other raw ones arise from Lichtenstein's ESPN Prospect Data.^[See Reference 4.]
+
+nfl_draft.csv has 34 variables. 25 of those are numerical, with the other nine being categorical. It has 8,435 observations, and has missingness for many performance statistics as well as some attributes (such as age drafted). That is somewhat expected, since football players of different positions typically do not record statistics in every category.
+
+nfl_draft_prospects.csv, which contains data for the players as draft prospects, has 13,354 observations and 24 variables (14 of which are categorical). The second contains textual information regarding prospects (much of which is contained in the first dataset) -- it has 12,905 observations and 21 variables (13 of which are categorical).
+
+college statistics.csv has 66,672 observations with 13 variables; four are numerical and the other 9 are categorical. Finally, college_qbr.csv has 2,049 observations, and 14 variables (12 of those 14 are numerical). None appear to have missingness.
+
+As for the joined datasets: nfl_draft_prospect_data_and_outcomes_1985_to_2015.csv has 46 variables, and 8,435 observations. Of those 46 variables, 30 are numerical, and 16 are categorical. It has missigness for statistical information at different positions (for the same reason as the nfl_draft.csv), as well as physical attributes and ESPN ranking data, which didn't exist for players drafted before 2004. There also was initial missigness in "team", which I used as the secondary identifier for a player's team name, but I resolved this by using the team abbreviation (which didn't have missingness) as the primary team identifier.
+
+nfl_draft_prospects_and_profiles_combined_1985_to_2021 has 9,940 observations and 23 variables, 11 of which are numerical. There's significant missingness in the ESPN metrics and physical attributes for the same reasons mentioned above.
 
 ## Explorations
 
@@ -345,24 +308,25 @@ nfl_draft_prospect_data_outcomes_1985_to_2015 |>
   geom_boxplot(fill = "gray") +
   labs(title = "Distribution of Career AV by Pick Number, Retired Second-Rounders: 1985-2015",  x = "Overall Pick Number", y = "Career Approximate Value (AV)")
 ```
-There seems to be, for the most par, a general decrease in median career AV by draft pick for the retired first-round picks. However, in the second round, there isn't an apparent decline in the median; the 64th overall pick has a range quite similar to that of the 35th pick. You could even say that the decline in median AV slows as early as, say, the 20th pick. 
+There seems to be, for the most part, a general decrease in median career AV by draft pick for the retired first-round picks. However, in the second round, there isn't an apparent decline in the median; the 64th overall pick has a range quite similar to that of the 35th pick. You could even say that the decline in median AV slows as early as, say, the 20th pick. 
 
-So, it's evident that there's high value early for teams picking in the first round, and it tends to drop as the first round goes on.
+So, it's evident that there's high value early for teams picking in the first round, and it tends to drop as the first round goes on. With first-round value looking high, that's a nice segue...
 
 ### With First-Round Value Looking High, what Factors Potentially Indicate Getting Picked Highly in the 21st century for Different Positions?
 
-Since the roles of different positions in football vary drastically, let's look at this at a few positions.
+Since the roles of different positions in football vary drastically, let's look at this at a few positions. Given quarterbacks play the most influential position in the sport, and the steadily-declining potential value of an draft pick as the selection gets further away from No. 1, it's imperative to identify the most elite quarterback prospects. It begs the question:
 
 #### Are the top QBs in college the highest-picked in the NFL Draft?
 
-To get a sense of this, let's look at who the best quarterbacks were in college, statistically, since 2004. Let's start examining collegiate seasons with estimated points added (EPA), which is widely regarded as the best statistic to capture overall offensive impact, and then examine top seasons by quarterback ratings (QBR):
+To get a sense of this, let's look at who the best quarterbacks were in college, statistically, since 2004. Let's start examining collegiate seasons with estimated points added (EPA), which is widely regarded^[See Reference 3.] as the best statistic to capture overall offensive impact, and then examine top seasons by quarterback ratings (QBR):
 
 ```{r}
 # Examining EPA for QB prospects
 qb_data_to_2004 |>
   ggplot(aes(x = total_epa)) +
   geom_histogram(color = "white", binwidth = 10) +
-  labs(title = "Distribution of College Estimated Points Added: Quarterback Prospects from 2004-2021", x = "Estimated Points Added (EPA)")
+  labs(title = "Distribution of College Estimated Points Added: QB Prospects 2004-2021", 
+       x = "Estimated Points Added (EPA)")
 
 top_qb_epas <- qb_data_to_2004 |>
   filter(total_epa >= 100) |>
@@ -557,7 +521,7 @@ The typical weight for drafted linemen hasn't actually varied drastically over t
 
 However, it appears that NFL teams are starting to tend to value heavier offensive tackles and guards. In contrast, it seems like a defensive end's weight matters less than it did about 20 years ago in considering how early they come off the draft board. A similar trend exists for defensive tackles. At that position, especially, height looks like it is starting to become a slightly greater factor in the 2020s drafts. Granted, the data only examines two drafts in the 2020s, which is worth noting. Nevertheless, the progression over these three decades indicates those small changes.
 
-Let's examine height for quarterbacks. It's a metric that, at that particular position, has sparked lots of debate around prospects who aren't tall but possess other great skills^[https://www.usatoday.com/story/sports/nfl/columnist/bell/2023/03/03/bryce-young-weight-height-nfl-quarterback-draft-combine/11394682002/]. Firstly, let's look at the height distribution for drafted QBs since 2004.
+Let's examine height for quarterbacks. It's a metric that, at that particular position, has sparked lots of debate around prospects who aren't tall but possess other great skills^[See Reference 1]. Firstly, let's look at the height distribution for drafted QBs since 2004.
 
 ```{r}
 # QB Heights: Univariate
@@ -619,13 +583,15 @@ Ironically, when it comes to the scouting experts (those at ESPN), the highest-r
 
 However, in all of these cases, there are both a significant number of shorter and taller outliers that are both highly-ranked and lowly-ranked. Thus, although height matters when it comes to draft prestige to an extent, it's not the end-all, be-all for a quarterback's draft position.
 
+Now, looking at different players' long-term values:
+
 ### What Makes a Successful Draft Pick, Long-Term? And Who are the Most Successful Ones?
 
 We've already explored the median AV by round, and its distribution for each of the first 64 picks for retired players. A top-5 draft pick may have a high AV relative to a third-rounder, but that doesn't make them a high-value pick (or a good one), even if they're the more valuable player!
 
-So, let's bring a new metric into the fold: approximate value over expected, player's approximate value subtracted by the median AV for retired players at their draft spot. 
+So, let's bring a new metric into the fold: approximate value over expected (AVOE). I'll define it as a player's approximate value subtracted by the median AV for retired players near their draft spot. 
 
-Granted, as we saw in some of the earlier explorations, the median AV for a player doesn't steadily decrease with every pick after the first round. Plus, different teams at different spots may pass on a better player to fill a positional need. Thus, I'll designate the "median AV" compared to each player as the median AV of a five-spot cluster. For instance, a No. 1 overall pick's AV over expected in this EDA would be their approximate value minus the median AV of retired picks No. 1 through No. 5 since 1985. A No. 6 pick would be compared to the median AVs for overall picks 6-10, a No. 11 pick for a median among picks 11-15, etc.
+Granted, as we saw in some of the earlier explorations, the median AV for a player doesn't steadily decrease with every pick after the first round. Plus, different teams at different spots may pass on a slightly better player to fill a positional need, especially later in the draft. Thus, I'll designate the "median AV" compared to each player as the median AV of a five-spot cluster. For instance, a No. 1 overall pick's AV over expected in this EDA would be their approximate value minus the median AV of retired picks No. 1 through No. 5 since 1985. A No. 6 pick would be compared to the median AVs for overall picks 6-10, a No. 11 pick for a median among picks 11-15, etc.
 
 
 Here are the 25 players who either retired before 2016 or are active players at least five players removed from being drafted who have surpassed expectations relative to their draft spot the most:
@@ -710,7 +676,7 @@ names <- c("Position", "Number of Players with 50+ AV over Expected")
 
 kable(data.frame(diamond_breakdown), col.names = names, caption = "Players with 50+ AV over Expected Drafted Round 3 or Later: Position Breakdown")
 ```
-Nearly every position in the sport is represented here (further, a nose tackle is often labeled as a defensive tackle)^[https://www.rookieroad.com/football/positions/nose-tackle/]. Linebackers and guards lead the way, though position doesn't necessarily appear to be a limiting factor of a player's ability to become a diamond in the rough.
+Nearly every position in the sport is represented here (further, a nose tackle is often labeled as a defensive tackle)^[See Reference 2]. Linebackers and guards lead the way, though position doesn't necessarily appear to be a limiting factor of a player's ability to become a diamond in the rough.
 
 Have certain teams done a better job at identifying those players than others? 
 
@@ -785,7 +751,7 @@ top_avoe_overall |>
   
 ```
 
-There are a number of takeaways from this. As they did in finding talent in the later rounds, the Pittsburgh Steelers and Green Bay Packers excel here. The Steelers, in particular, have a much higher cumulative approximate value over expected than the other teams. The team with the lowest cumulative total is the Oakland Raiders.
+There are a number of takeaways from this. As they did in finding talent in the later rounds, the Pittsburgh Steelers and Green Bay Packers excel here. The Steelers, in particular, have a much higher cumulative approximate value over expected than the other teams. The team with the lowest cumulative total is the (formerly) Oakland Raiders.
 
 Additionally, it's clear that over time, cumulative AV over expected for teams tends to increase. This makes sense, as the majority of draft picks are remarkably close to the lower limit for a player's approximate value (0), meaning that there's not much room for disappointment for, say, a late-round pick in a cluster with a median AV of 1. However, there's a lot of room to exceed expectations. The biggest "bust," Cincinnati Bengals quarterback and 1999 No. 1 overall pick Akili Smith, has the lowest AV over expected since 1985 at -52. Meanwhile, as we explored, a late-round pick with a +52 AV over expected only slightly stands out from the crowd. Thus, overall growth -- despite some down years -- is almost a certainty over three decades for most teams.
 
@@ -793,11 +759,16 @@ Additionally, it's clear that over time, cumulative AV over expected for teams t
 Ultimately, these three explorations help us equate success with approximate value, “value” with AV relative to similar draftees, and “high draft status” for quarterbacks and linemen as a product of a number of factors, namely EPA and QBR for the elite of the elite quarterbacks. It's worth noting that the overlap of this data may have been a limiting factor; having more physical and college statistical data to work with -- especially for quarterbacks -- could have been helpful in solidifying interpretations and analyses of certain trends.
 
 ## References
-Data Sources: 
+Bell, J. (2023, March 4). Bryce Young might ultimately prove to NFL his small build isn’t a problem | opinion. USA Today. https://www.usatoday.com/story/sports/nfl/columnist/bell/2023/03/03/bryce-young-weight-height-nfl-quarterback-draft-combine/11394682002/.
+
+Football nose tackle. rookieroad.com. (n.d.). https://www.rookieroad.com/football/positions/nose-tackle/.
+
+Jurgens, T. (2022, November 1). Betting 101: Explaining commonly cited metrics and factors in our handicapping: NFL and NCAA betting picks. PFF. https://www.pff.com/news/bet-nfl-bet-terms-metrics-game-script-handicapping-success-rate-epa#:~:text=Expected%20Points%20Added%20(EPA),-Expected%20Points%20Added&amp;text=For%20every%20play%2C%20EPA%20is,disparity%20in%20total%20plays%20run. 
+
+Lichtenstein, J. (2021, May 5). ESPN NFL draft prospect data. Kaggle. https://www.kaggle.com/datasets/jacklichtenstein/espn-nfl-draft-prospect-data/data.
 
 Pedersen, U. T. (2023, March 2). NFL draft 1985-2015. Kaggle. https://www.kaggle.com/datasets/ulrikthygepedersen/nfl-draft-1985-2015.
 
-Lichtenstein, J. (2021, May 5). ESPN NFL draft prospect data. Kaggle. https://www.kaggle.com/datasets/jacklichtenstein/espn-nfl-draft-prospect-data/data.
 
 ## Appendix: Technical Info
 ###  Foundation for Cleaning: Raw Dataset Timelines
