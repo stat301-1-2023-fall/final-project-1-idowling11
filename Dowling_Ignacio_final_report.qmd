@@ -434,7 +434,7 @@ nfl_draft_prospect_data_combined_1985_to_2021 |>
   filter(overall > 0, overall < 1000) |>
   ggplot(aes(x = overall, y = grade, color = player_name)) +
   geom_point(size = 4) +
-  labs(title = "QBs with Top 25 College EPA Seasons Since 2004: Draft Pick vs. ESPN Grade", subtitle = "This does not include the nine players also ranked in Top 25 for College QBR since 2004.", x = "Overall Pick", y = "ESPN Draft Grade", color = "Player Name", caption = "All other players in the top 25 not listed here or in subtitle were not drafted.")
+  labs(title = "QBs with Top 25 College QBR Seasons Since 2004: Draft Pick vs. ESPN Grade", subtitle = "This does not include the nine players also ranked in Top 25 for College QBR since 2004.", x = "Overall Pick", y = "ESPN Draft Grade", color = "Player Name", caption = "All other players in the top 25 not listed here or in subtitle were not drafted.")
 ```
 
 More so than EPA, many of the quarterbacks with the highest QBRs in a college season since 2004 tend to be drafted early in the first round. While five of the 14 quarterbacks outside of the nine excluded went undrafted, QBR still appears to have a stronger relationship with high draft status (for the most elite QBs in that category) than EPA. 

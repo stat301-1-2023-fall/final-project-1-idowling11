@@ -114,7 +114,7 @@ nfl_draft_prospect_data_combined_1985_to_2021 |>
   filter(overall > 0, overall < 1000) |>
   ggplot(aes(x = overall, y = grade, color = player_name)) +
   geom_point(size = 4) +
-  labs(title = "QBs with Top 25 College EPA Seasons Since 2004: Draft Pick vs. ESPN Grade", 
+  labs(title = "QBs with Top 25 College QBR Seasons Since 2004: Draft Pick vs. ESPN Grade", 
        subtitle = "This does not include the nine players also ranked in Top 25 for 
                     College QBR since 2004.", 
        x = "Overall Pick", 

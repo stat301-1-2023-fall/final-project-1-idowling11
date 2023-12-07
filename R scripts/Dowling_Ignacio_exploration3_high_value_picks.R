@@ -104,7 +104,8 @@ top_avoe_overall |>
   labs(title = "Cumulative AV Over Expected: AFC Teams from 1985-2015",
        x = "Year",
        y = "Cumulative AV Over Expected", 
-       subtitle = "The bold red line is the line of best fit.")
+       subtitle = "The bold red line is the line of best fit.",
+       color = "Team Abbreviation")
 
 # Establishing Cumulative Net-AV Over Expected: NFC teams
 top_avoe_overall |>
@@ -128,4 +129,5 @@ top_avoe_overall |>
   labs(title = "Cumulative AV Over Expected: NFC Teams from 1985-2015",
        x = "Year",
        y = "Cumulative AV Over Expected", 
-       subtitle = "The bold red line is the line of best fit.")
+       subtitle = "The bold red line is the line of best fit.",
+       color = "Team Abbreviation")
