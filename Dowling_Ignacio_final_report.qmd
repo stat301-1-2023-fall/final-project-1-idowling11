@@ -43,7 +43,6 @@ nfl_draft_player_info_and_outcomes <- read_csv("data/raw/nfl_draft.csv")
 # reading in five .csvs from second dataset
 nfl_draft_prospect_data <- read_csv("data/raw/nfl_draft_prospects.csv")
 nfl_draft_profiles <- read_csv("data/raw/nfl_draft_profiles.csv")
-player_ids <- read_csv("data/raw/ids.csv")
 college_stats <- read_csv("data/raw/college_statistics.csv")
 qb_data_to_2004 <- read_csv("data/raw/college_qbr.csv")
 ```
@@ -819,5 +818,3 @@ To get a sense of which years we should work with in answering some of the resea
 In working with quarterback data for prospects in their last years of college football and comparing them to league success, we should use quarterbacks from 2004 to 2015. In comparing data from all prospects to their NFL outcomes (that is, nfl_draft_prospect_data vs. outcomes) -- the two largest datasets here -- I'll aim to focus on the years 1985 to 2015.
 
 Comparing the collegiate stats dataset to professional outcomes may not be as beneficial to developing any insights, since their intersection is just a year (2014 to 2015). However, though, in joining datasets and conducting multivariate analysis, this table gives me a sense of the time crossovers of the datasets in question.
-
-Two of the datasets (nfl_draft_profiles and player_ids) don't have years, so I'll likely match any player observations I need from those using the player names.

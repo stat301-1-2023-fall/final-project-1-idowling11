@@ -14,7 +14,6 @@ nfl_draft_player_info_and_outcomes <- read_csv("data/nfl_draft.csv")
 # reading in five .csvs from second dataset
 nfl_draft_prospect_data <- read_csv("data/nfl_draft_prospects.csv")
 nfl_draft_profiles <- read_csv("data/nfl_draft_profiles.csv")
-player_ids <- read_csv("data/ids.csv")
 college_stats <- read_csv("data/college_statistics.csv")
 qb_data_to_2004 <- read_csv("data/college_qbr.csv")
 
