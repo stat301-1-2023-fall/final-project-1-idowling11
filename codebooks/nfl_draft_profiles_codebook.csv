@@ -1,0 +1,22 @@
+variables,descriptions
+player_id,Player ID
+guid,Alternate Character ID
+alt_player_id,Primary Alternate Player ID
+player_name,Player Name
+position,Position
+pos_abbr,Position abbreviation
+weight,Weight
+height,Height (inches)
+player_image,Player image
+link,Link to ESPN profile
+school_logo,School logo
+school,School name
+school_abbr,School abbreviation
+school_name,School team name
+pos_rk,"Position rank, ESPN"
+ovr_rk,"Overall rank, ESPN"
+grade,ESPN Grade
+text1,Prospect note 1
+text2,Prospect note 2
+text3,Prospect note 3
+text4,Prospect note 4

@@ -1,0 +1,15 @@
+variables,descriptions
+season,College season
+guid,Season ID for player
+player_name,player name
+age,current age
+total_qbr,"Adjusted Total QB Rating, which values quarterbacks on all plays from 0-100 scale adjusted for strength of opposing defenses."
+points_added,"Number of points contributed by a QB, accounting for QBR and how much he plays, above the level of an average quarterback."
+qb_plays,Plays on which the QB has a non-zero expected points contribution. Includes most plays that are not handoffs.
+total_epa,"Total expected points added with low leverage plays, according to ESPN Win Probability model, down-weighted."
+pass,Expected points added on pass attempts with low leverage plays down-weighted.
+run,Clutch-weighted expected points added through rushes
+exp_sack,Clutch-weighted expected points added (lost) from sacks (not fumbles that may occur because of sacks)
+penalty,Expected points added on penalties with low leverage plays down-weighted.
+raw_qbr,"Raw Total QB Rating, which values QB on all play types on a 0-100 scale (not adjusted for opposing defenses faced)"
+sack,Expected points added on sacks with low leverage plays down-weighted.

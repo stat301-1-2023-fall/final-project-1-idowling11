@@ -1,0 +1,35 @@
+variables,descriptions
+column_a,Year and Player name
+player_id,Player ID
+year,Year
+rnd,Draft round
+pick,Pick number
+tm,Team
+player,Player name
+hof,Hall of Fame?
+pos,Position
+position_standard,Standard football position
+first4av,Approximate Value (AV) in first 4 seasons
+age,Age
+to,Last year played in NFL
+ap1,All-Pro First Team Selections
+pb,Pro Bowl selections
+st,Seasons as a starter
+carav,Career AV
+drav,Draft average
+g,Games played
+cmp,Completion percentage
+pass_att,Pass attempts
+pass_yds,Passing yards
+pass_td,Passing touchdowns
+pass_int,Passing interceptions
+rush_att,Rushing attempts
+rush_yds,Rushing yards
+rush_tds,Rushing touchdowns
+rec,Receptions
+rec_yds,Receiving yards
+rec_tds,Receiving touchdowns
+tkl,Tackles
+def_int,Defensive interceptions
+sk,Sacks
+college_univ,College

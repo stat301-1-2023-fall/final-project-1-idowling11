@@ -1,0 +1,24 @@
+variables,descriptions
+draft_year,Draft Year
+player_id,Unique player ID
+player_name,Player name
+position,Position
+pos_abbr,Position abbreviation
+school,School name
+school_name,School team name
+school_abbr,School abbreviation
+link,Link to ESPN profile
+pick,NFL Draft pick number
+overall,Overall draft pick number
+round,Draft round
+traded,Was the player traded in the NFL Draft?
+trade_note,"Note about where the player was traded, if applicable"
+team,Drafting team name
+team_abbr,Drafting team abbreviation
+weight,Weight
+height,Height (inches)
+pos_rk,Position Rank by ESPN in draft class
+ovr_rk,Overall rank by ESPN in draft class
+grade,ESPN Grade
+alt_player_id,Alternate Player ID
+join_id_outcomes,Player ID used to match/join two datasets together

@@ -1,0 +1,14 @@
+variables,descriptions
+player_id,Unique Player ID
+alt_player_id,Alternate player ID
+player_name,Player name
+pos_abbr,Position abbreviation
+school,School name
+school_abbr,School abbreviation
+school_primary_color,School primary color
+school_alt_color,School alternate color
+season,Season
+statistic,Football statistic
+value,Football statistic's value
+active,Is the player active?
+all_star,Was the player a college all-star?

@@ -55,11 +55,6 @@ player_ids <- read_csv("data/ids.csv")
 college_stats <- read_csv("data/college_statistics.csv")
 qb_data_to_2004 <- read_csv("data/college_qbr.csv")
 
-# General GIST of what I'll start out with
-  # Univariate distribution of AVs, distribution of HOFs by overall draft pick
-  # Figure out how to join/merge a few of these datasets, explain different subsets of years we'll look at since some intersect in diff places
-  # Univariate analysis of counting stats/accolades (shit ton of histograms)
-  # A few scatters/attributes about stuff that correlates with high AV for QBs
   
   
 
